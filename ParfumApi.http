@@ -1,6 +1,53 @@
-@ParfumApi_HostAddress = http://localhost:5212
+@adres = http://localhost:5212
 
-GET {{ParfumApi_HostAddress}}/weatherforecast/
-Accept: application/json
+### Tüm parfümler
+GET {{adres}}/api/parfumler
 
-###
+### Tek parfüm
+GET {{adres}}/api/parfumler/3
+
+### Olmayan parfüm (404 bekleniyor)
+GET {{adres}}/api/parfumler/999
+
+### Yeni parfüm ekle (201 bekleniyor)
+POST {{adres}}/api/parfumler
+Content-Type: application/json
+
+{
+  "ad": "Miss Dior",
+  "aciklama": "Gül ve paçuli ile zarif bir koku.",
+  "fiyat": 5300,
+  "hacimMl": 100,
+  "cinsiyet": "Kadın",
+  "stok": 7,
+  "markaId": 2
+}
+
+### Hatalı ekleme (400 bekleniyor)
+POST {{adres}}/api/parfumler
+Content-Type: application/json
+
+{
+  "ad": "",
+  "fiyat": -5,
+  "hacimMl": 100,
+  "cinsiyet": "Çocuk",
+  "markaId": 2
+}
+
+### Güncelle (204 bekleniyor)
+PUT {{adres}}/api/parfumler/9
+Content-Type: application/json
+
+{
+  "ad": "Miss Dior",
+  "aciklama": "Gül ve paçuli ile zarif bir koku.",
+  "fiyat": 4990,
+  "hacimMl": 100,
+  "cinsiyet": "Kadın",
+  "stok": 3,
+  "markaId": 2
+}
+
+### Sil (204 bekleniyor)
+DELETE {{adres}}/api/parfumler/9
