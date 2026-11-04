@@ -51,3 +51,27 @@ Content-Type: application/json
 
 ### Sil (204 bekleniyor)
 DELETE {{adres}}/api/parfumler/9
+
+### Markalar
+GET {{adres}}/api/markalar
+
+### Varsayılan (1. sayfa, 6 kayıt)
+GET {{adres}}/api/parfumler
+
+### 2. sayfa
+GET {{adres}}/api/parfumler?sayfa=2
+
+### Arama
+GET {{adres}}/api/parfumler?ara=dior
+
+### Erkek parfümleri, ucuzdan pahalıya
+GET {{adres}}/api/parfumler?cinsiyet=Erkek&sirala=fiyat
+
+### Fiyat aralığı
+GET {{adres}}/api/parfumler?minFiyat=5000&maxFiyat=6000
+
+### Marka + sayfa boyutu
+GET {{adres}}/api/parfumler?markaId=3&boyut=2
+
+### Geçersiz sayfa boyutu (400 bekleniyor)
+GET {{adres}}/api/parfumler?boyut=500

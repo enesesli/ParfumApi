@@ -17,12 +17,54 @@ public class ParfumlerController : ControllerBase
         _db = db;
     }
 
-    // GET api/parfumler
-    [HttpGet]
-    public async Task<ActionResult<List<ParfumDto>>> Listele()
+// GET api/parfumler?ara=...&markaId=...&cinsiyet=...&minFiyat=...&maxFiyat=...&sirala=...&sayfa=...&boyut=...
+[HttpGet]
+public async Task<ActionResult<SayfaliSonuc<ParfumDto>>> Listele([FromQuery] ParfumSorgu s)
+{
+    var sorgu = _db.Parfumler.AsQueryable();
+
+    // 1) Filtreler
+    if (!string.IsNullOrWhiteSpace(s.Ara))
     {
-        return await DtoyaCevir(_db.Parfumler).ToListAsync();
+        var ara = s.Ara.Trim().ToLower();
+        sorgu = sorgu.Where(p =>
+            p.Ad.ToLower().Contains(ara) ||
+            p.Marka!.Ad.ToLower().Contains(ara));
     }
+
+    if (s.MarkaId.HasValue)
+        sorgu = sorgu.Where(p => p.MarkaId == s.MarkaId);
+
+    if (!string.IsNullOrWhiteSpace(s.Cinsiyet))
+        sorgu = sorgu.Where(p => p.Cinsiyet == s.Cinsiyet);
+
+    if (s.MinFiyat.HasValue)
+        sorgu = sorgu.Where(p => p.Fiyat >= s.MinFiyat);
+
+    if (s.MaxFiyat.HasValue)
+        sorgu = sorgu.Where(p => p.Fiyat <= s.MaxFiyat);
+
+    // 2) Sıralama
+    sorgu = s.Sirala switch
+    {
+        "fiyat" => sorgu.OrderBy(p => p.Fiyat),
+        "fiyat_azalan" => sorgu.OrderByDescending(p => p.Fiyat),
+        "ad" => sorgu.OrderBy(p => p.Ad),
+        _ => sorgu.OrderBy(p => p.Id)
+    };
+
+    // 3) Sayfalama
+    var toplam = await sorgu.CountAsync();
+
+    var veriler = await DtoyaCevir(sorgu
+            .Skip((s.Sayfa - 1) * s.Boyut)
+            .Take(s.Boyut))
+        .ToListAsync();
+
+    var toplamSayfa = (int)Math.Ceiling(toplam / (double)s.Boyut);
+
+    return new SayfaliSonuc<ParfumDto>(veriler, toplam, s.Sayfa, s.Boyut, toplamSayfa);
+}
 
     // GET api/parfumler/3
     [HttpGet("{id}")]
