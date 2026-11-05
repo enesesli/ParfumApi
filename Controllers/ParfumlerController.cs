@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ParfumApi.Data;
@@ -81,6 +82,7 @@ public async Task<ActionResult<SayfaliSonuc<ParfumDto>>> Listele([FromQuery] Par
 
     // POST api/parfumler
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<ParfumDto>> Ekle(ParfumKaydetDto dto)
     {
         if (!await _db.Markalar.AnyAsync(m => m.Id == dto.MarkaId))
@@ -100,6 +102,7 @@ public async Task<ActionResult<SayfaliSonuc<ParfumDto>>> Listele([FromQuery] Par
 
     // PUT api/parfumler/3
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Guncelle(int id, ParfumKaydetDto dto)
     {
         var parfum = await _db.Parfumler.FindAsync(id);
@@ -117,6 +120,7 @@ public async Task<ActionResult<SayfaliSonuc<ParfumDto>>> Listele([FromQuery] Par
 
     // DELETE api/parfumler/3
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Sil(int id)
     {
         var parfum = await _db.Parfumler.FindAsync(id);

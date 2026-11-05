@@ -9,6 +9,7 @@ public class AppDbContext : DbContext
 
     public DbSet<Marka> Markalar => Set<Marka>();
     public DbSet<Parfum> Parfumler => Set<Parfum>();
+    public DbSet<Kullanici> Kullanicilar => Set<Kullanici>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -34,5 +35,10 @@ public class AppDbContext : DbContext
             new Parfum { Id = 7, MarkaId = 4, Ad = "Libre", Aciklama = "Lavanta ve portakal çiçeği ile modern bir koku.", Fiyat = 5000, HacimMl = 90, Cinsiyet = "Kadın", Stok = 10 },
             new Parfum { Id = 8, MarkaId = 4, Ad = "Y Eau de Parfum", Aciklama = "Elma, adaçayı ve odunsu notalar.", Fiyat = 4600, HacimMl = 100, Cinsiyet = "Erkek", Stok = 15 }
         );
+
+        // Aynı kullanıcı adıyla iki kayıt olamaz
+        modelBuilder.Entity<Kullanici>()
+            .HasIndex(k => k.KullaniciAdi)
+            .IsUnique();
     }
 }

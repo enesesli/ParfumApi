@@ -75,3 +75,42 @@ GET {{adres}}/api/parfumler?markaId=3&boyut=2
 
 ### Geçersiz sayfa boyutu (400 bekleniyor)
 GET {{adres}}/api/parfumler?boyut=500
+
+### ===== Kimlik doğrulama (Aşama 6) =====
+
+### Token olmadan silme (401 bekleniyor)
+DELETE {{adres}}/api/parfumler/1
+
+### Yanlış şifre (401 bekleniyor)
+POST {{adres}}/api/auth/giris
+Content-Type: application/json
+
+{
+  "kullaniciAdi": "admin",
+  "sifre": "yanlis-sifre"
+}
+
+### Doğru giriş (aşağıya user-secrets'ta belirlediğin şifreyi yaz)
+# @name giris
+POST {{adres}}/api/auth/giris
+Content-Type: application/json
+
+{
+  "kullaniciAdi": "admin",
+  "sifre": "SIFRENI_BURAYA_YAZ"
+}
+
+### Token ile ekleme (201 bekleniyor, önce "Doğru giriş"i çalıştır)
+POST {{adres}}/api/parfumler
+Authorization: Bearer {{giris.response.body.token}}
+Content-Type: application/json
+
+{
+  "ad": "Hypnotic Poison",
+  "aciklama": "Badem, vanilya ve misk.",
+  "fiyat": 4700,
+  "hacimMl": 100,
+  "cinsiyet": "Kadın",
+  "stok": 6,
+  "markaId": 2
+}
