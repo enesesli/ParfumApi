@@ -483,3 +483,7 @@ $RECYCLE.BIN/
 *.db
 *.db-shm
 *.db-wal
+
+# Yüklenen ürün görselleri GitHub'a gitmesin (telifli olabilir)
+wwwroot/gorseller/*
+!wwwroot/gorseller/.gitkeep
