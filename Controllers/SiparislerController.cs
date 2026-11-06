@@ -216,6 +216,7 @@ public class SiparislerController : ControllerBase
         siparis.OdemeYontemi = "Kripto";
         siparis.KriptoPara = fatura.Para;
         siparis.KriptoTutar = fatura.Tutar;
+        siparis.KriptoKur = fatura.Kur;
         siparis.KriptoAdres = fatura.Adres;
         siparis.KriptoSonTarih = fatura.SonTarih;
         await _db.SaveChangesAsync();
@@ -395,8 +396,8 @@ public class SiparislerController : ControllerBase
         KriptoFaturaDto? kripto = null;
         if (s.KriptoAdres is not null && s.KriptoPara is not null && s.KriptoTutar is not null && s.KriptoSonTarih is not null)
         {
-            var kur = s.KriptoTutar.Value == 0 ? 0 : Math.Round(s.Toplam / s.KriptoTutar.Value, 2);
-            kripto = new KriptoFaturaDto(s.KriptoPara, s.KriptoTutar.Value, kur, s.KriptoAdres, Utc(s.KriptoSonTarih.Value), true);
+            kripto = new KriptoFaturaDto(
+                s.KriptoPara, s.KriptoTutar.Value, s.KriptoKur ?? 0, s.KriptoAdres, Utc(s.KriptoSonTarih.Value), true);
         }
 
         return new SiparisDto(

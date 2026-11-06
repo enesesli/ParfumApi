@@ -56,6 +56,7 @@ public class Siparis
     // Kripto ödeme (simülasyon)
     public string? KriptoPara { get; set; }
     public decimal? KriptoTutar { get; set; }
+    public decimal? KriptoKur { get; set; }        // fatura anında sabitlenen kur (1 birim = ? TL)
     public string? KriptoAdres { get; set; }
     public DateTime? KriptoSonTarih { get; set; }
 

@@ -1,0 +1,29 @@
+# Her push'ta ve pull request'te API'yi derleyip testleri çalıştırır.
+name: Testler
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Kodu indir
+        uses: actions/checkout@v4
+
+      - name: .NET 10 kur
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Paketleri indir
+        run: dotnet restore ParfumApi.Tests/ParfumApi.Tests.csproj
+
+      - name: Derle
+        run: dotnet build ParfumApi.Tests/ParfumApi.Tests.csproj --no-restore
+
+      - name: Testleri çalıştır
+        run: dotnet test ParfumApi.Tests/ParfumApi.Tests.csproj --no-build --logger "console;verbosity=normal"

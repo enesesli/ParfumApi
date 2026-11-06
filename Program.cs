@@ -111,3 +111,6 @@ app.MapControllers();
 app.MapGet("/saglik", () => Results.Ok(new { durum = "çalışıyor", zaman = DateTime.UtcNow }));
 
 app.Run();
+
+// Test projesindeki WebApplicationFactory<Program> bu sınıfa erişebilsin diye
+public partial class Program { }

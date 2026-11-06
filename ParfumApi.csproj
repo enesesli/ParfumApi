@@ -5,6 +5,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>9c5330a7-3f1d-4f18-becc-1c55b4fa07fa</UserSecretsId>
+    <!-- Test projesi bu klasörün içinde; API projesi onun dosyalarını derlemeye katmasın -->
+    <DefaultItemExcludes>$(DefaultItemExcludes);ParfumApi.Tests/**</DefaultItemExcludes>
   </PropertyGroup>
 
   <ItemGroup>

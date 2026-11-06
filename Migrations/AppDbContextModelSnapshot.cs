@@ -1404,6 +1404,9 @@ namespace ParfumApi.Migrations
                     b.Property<string>("KriptoAdres")
                         .HasColumnType("TEXT");
 
+                    b.Property<double?>("KriptoKur")
+                        .HasColumnType("REAL");
+
                     b.Property<string>("KriptoPara")
                         .HasColumnType("TEXT");
 
